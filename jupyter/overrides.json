@@ -1,0 +1,12 @@
+{
+  "@jupyterlab/translation-extension:plugin": {
+    "locale": "ru_RU"
+  },
+  "@jupyterlab/apputils-extension:notification": {
+    "checkForUpdates": false,
+    "fetchNews": "false"
+  },
+  "@jupyterlab/apputils-extension:themes": {
+    "theme": "JupyterLab Light"
+  }
+}

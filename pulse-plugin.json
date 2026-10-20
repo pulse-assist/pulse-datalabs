@@ -1,0 +1,74 @@
+{
+  "id": "datalabs",
+  "name": "DataLabs",
+  "version": "0.1.0",
+  "pulse": ">=1.11",
+  "description": "Ноутбуки Jupyter: .ipynb в «Файлах» открывается в Jupyter, JupyterLab — в меню; агенты считают в живом ядре Python, запускают ноутбуки, собирают отчёты по расписанию и выгружают их в HTML и PDF",
+  "permissions": [
+    "embed",
+    "files:open",
+    "files:mount",
+    "notify",
+    "network"
+  ],
+  "runtime": {
+    "kind": "docker",
+    "dockerfile": "Dockerfile",
+    "health": "/ready",
+    "network": "isolated",
+    "memory": "2g",
+    "cpus": 2
+  },
+  "files": {
+    "handlers": [
+      {
+        "id": "jupyter",
+        "title": "Jupyter",
+        "extensions": ["ipynb"],
+        "path": "/open",
+        "access": "read",
+        "preview": true,
+        "mobile": "view"
+      }
+    ],
+    "templates": [
+      {
+        "title": "Ноутбук",
+        "extension": "ipynb",
+        "file": "templates/new.ipynb"
+      }
+    ]
+  },
+  "ui": {
+    "dist": "ui"
+  },
+  "menu": [
+    {
+      "id": "main",
+      "title": "DataLabs",
+      "icon": "bi-journal-code",
+      "page": "index.html",
+      "app": "/lab"
+    }
+  ],
+  "settings": {
+    "kernel_idle_minutes": {
+      "type": "integer",
+      "title": "Останавливать ядро без дела через, мин",
+      "default": 60,
+      "description": "Освобождает память: переменные ядра пропадут, ноутбук останется. Ядро с открытой вкладкой не останавливается; 0 — не останавливать"
+    },
+    "run_timeout_minutes": {
+      "type": "integer",
+      "title": "Предел запуска ноутбука агентом, мин",
+      "default": 30,
+      "description": "pulse datalabs run и report: дольше — запуск прерывается с ошибкой"
+    }
+  },
+  "skills": [
+    "skills/datalabs.md"
+  ],
+  "commands": "commands.json",
+  "check": "check",
+  "install": "INSTALL.md"
+}

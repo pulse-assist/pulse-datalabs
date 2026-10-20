@@ -1,0 +1,6 @@
+# Сверх образа Jupyter (scipy-notebook) и pulse_plugin: прокси к Jupyter, запуск и выгрузка ноутбуков
+httpx>=0.27
+websockets>=14
+nbformat>=5.10
+nbconvert[webpdf]>=7.16
+papermill>=2.6

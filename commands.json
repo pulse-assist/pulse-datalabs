@@ -1,0 +1,92 @@
+[
+  {
+    "name": "exec",
+    "description": "Выполнить код Python в живом ядре агента (переменные живут между вызовами): текст вывода, таблицы, ошибки; картинки сохраняются файлами",
+    "timeout_sec": 900,
+    "args": [
+      {"name": "code", "description": "код Python (или --code_file)"},
+      {"name": "code_file", "description": "файл с кодом: путь в «Файлах» или $PULSE_FS_DIR/…"},
+      {"name": "session", "description": "имя ядра (по умолчанию main): у разных задач — разные ядра"},
+      {"name": "cwd", "description": "рабочая папка ядра при его запуске — путь в «Файлах» (по умолчанию корень)"},
+      {"name": "timeout", "description": "секунд на выполнение (по умолчанию 300, до 840): дольше — прерывание"}
+    ]
+  },
+  {
+    "name": "sessions",
+    "description": "Живые ядра агентов: имя, папка, сколько ячеек выполнено, когда последний раз"
+  },
+  {
+    "name": "save",
+    "description": "Собрать ноутбук .ipynb из ячеек ядра агента (код и вывод) — владелец откроет его в «Файлах»",
+    "args": [
+      {"name": "session", "description": "имя ядра (по умолчанию main)"},
+      {"name": "path", "required": true, "description": "куда: путь в «Файлах», например Аналитика/продажи.ipynb"},
+      {"name": "title", "description": "заголовок — первая ячейка Markdown"},
+      {"name": "errors", "description": "true — оставить ячейки с ошибками (по умолчанию выбрасываются)"},
+      {"name": "overwrite", "description": "true — заменить существующий файл"}
+    ]
+  },
+  {
+    "name": "reset",
+    "description": "Перезапустить ядро агента: переменные и история ячеек очищаются",
+    "args": [
+      {"name": "session", "description": "имя ядра (по умолчанию main)"}
+    ]
+  },
+  {
+    "name": "close",
+    "description": "Остановить ядро агента и забыть его историю",
+    "args": [
+      {"name": "session", "required": true, "description": "имя ядра"}
+    ]
+  },
+  {
+    "name": "run",
+    "description": "Выполнить ноутбук целиком (papermill) с параметрами; вывод сохраняется в ноутбук. Ошибка — номер ячейки и текст",
+    "timeout_sec": 3600,
+    "args": [
+      {"name": "path", "required": true, "description": "ноутбук: путь в «Файлах» или $PULSE_FS_DIR/…"},
+      {"name": "params", "description": "параметры JSON: {\"month\": \"2026-10\"} — в ячейку с тегом parameters"},
+      {"name": "output", "description": "куда сохранить выполненный ноутбук (по умолчанию — тот же файл)"}
+    ]
+  },
+  {
+    "name": "read",
+    "description": "Ноутбук текстом: ячейки с номерами, код, Markdown и вывод (картинки — пометкой)",
+    "args": [
+      {"name": "path", "required": true, "description": "ноутбук: путь в «Файлах» или $PULSE_FS_DIR/…"},
+      {"name": "cells", "description": "какие ячейки: 3 или 2-7 (по умолчанию все)"},
+      {"name": "outputs", "description": "false — без вывода, только код и текст"},
+      {"name": "max_chars", "description": "предел ответа, символов (по умолчанию 20000)"}
+    ]
+  },
+  {
+    "name": "export",
+    "description": "Выгрузить ноутбук в html, pdf, py или md рядом с ним (или в --output)",
+    "timeout_sec": 600,
+    "args": [
+      {"name": "path", "required": true, "description": "ноутбук: путь в «Файлах» или $PULSE_FS_DIR/…"},
+      {"name": "to", "description": "html (по умолчанию), pdf, py или md"},
+      {"name": "output", "description": "папка или файл результата в «Файлах»"},
+      {"name": "no_input", "description": "true — без кода, только текст и результаты (для отчётов)"}
+    ]
+  },
+  {
+    "name": "report",
+    "description": "Отчёт: выполнить копию ноутбука с параметрами, выгрузить в HTML/PDF в папку отчётов и прислать владельцу ссылку. Для заданий планировщика",
+    "timeout_sec": 3600,
+    "args": [
+      {"name": "path", "required": true, "description": "ноутбук-шаблон отчёта: путь в «Файлах»"},
+      {"name": "params", "description": "параметры JSON для ячейки parameters"},
+      {"name": "to", "description": "папка отчётов в «Файлах» (по умолчанию «Отчёты» рядом с ноутбуком)"},
+      {"name": "format", "description": "html (по умолчанию) или pdf"},
+      {"name": "code", "description": "true — показывать код в отчёте (по умолчанию только результаты)"},
+      {"name": "notify", "description": "false — не присылать уведомление (по умолчанию — в Telegram и Пульс)"},
+      {"name": "title", "description": "заголовок уведомления (по умолчанию — имя ноутбука)"}
+    ]
+  },
+  {
+    "name": "check",
+    "description": "Проверка: Jupyter запущен, файлы владельца видны, ядро считает, версии пакетов, лимит памяти"
+  }
+]

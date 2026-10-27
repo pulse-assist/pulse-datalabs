@@ -212,3 +212,10 @@ def test_image_saver_writes_into_plugin_folder(tmp_path):
     assert save("png", b"x") == "Plugins/DataLabs/агенты/main/ячейка 4-1.png"
     assert save("svg", b"<svg/>") == "Plugins/DataLabs/агенты/main/ячейка 4-2.svg"
     assert json.loads(json.dumps(kernels.history("main"))) == []
+
+
+def test_kernelspec_runs_kernel_with_nice(tmp_path):
+    from datalabs_plugin.jupyter import KERNEL_NICE, write_kernelspec
+
+    spec = json.loads((write_kernelspec(tmp_path) / "kernel.json").read_text(encoding="utf-8"))
+    assert spec["argv"][:3] == ["nice", "-n", str(KERNEL_NICE)] and "{connection_file}" in spec["argv"]

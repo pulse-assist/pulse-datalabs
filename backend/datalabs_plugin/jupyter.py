@@ -40,6 +40,22 @@ def kernel_env(root_dir: Path) -> dict[str, str]:
     return env
 
 
+KERNEL_NICE = 10
+
+
+def write_kernelspec(data_dir: Path) -> Path:
+    """Ядро python3 с пониженным приоритетом (nice): расчёт ноутбука занимает весь CPU контейнера, а сервер
+    плагина и Jupyter должны отвечать — иначе Пульс сочтёт плагин зависшим. Спецификация лежит в JUPYTER_DATA_DIR
+    (раньше системной) — её берут и Jupyter, и papermill."""
+    target = data_dir / "kernels" / "python3"
+    target.mkdir(parents=True, exist_ok=True)
+    spec = {"argv": ["nice", "-n", str(KERNEL_NICE), sys.executable, "-m", "ipykernel_launcher",
+                     "-f", "{connection_file}"],
+            "display_name": "Python 3 (ipykernel)", "language": "python", "metadata": {"debugger": True}}
+    (target / "kernel.json").write_text(json.dumps(spec, ensure_ascii=False, indent=1), encoding="utf-8")
+    return target
+
+
 def server_config(*, base_url: str, root_dir: Path, port: int, token: str, data_dir: Path,
                   idle_minutes: int) -> str:
     """jupyter_server_config.py: значения — литералы Python (repr)."""
@@ -120,6 +136,7 @@ class Jupyter:
             if self.alive():
                 return
             (self.data_dir / "config").mkdir(parents=True, exist_ok=True)
+            write_kernelspec(Path(os.environ.get("JUPYTER_DATA_DIR") or self.data_dir / "data"))
             config = self.data_dir / "config" / "jupyter_server_config.py"
             config.write_text(server_config(base_url=self.base_url, root_dir=self.root_dir, port=self.port,
                                             token=self.token, data_dir=self.data_dir,

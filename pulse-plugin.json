@@ -1,7 +1,7 @@
 {
   "id": "datalabs",
   "name": "DataLabs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "pulse": ">=1.11",
   "description": "Ноутбуки Jupyter: .ipynb в «Файлах» открывается в Jupyter, JupyterLab — в меню; агенты считают в живом ядре Python, запускают ноутбуки, собирают отчёты по расписанию и выгружают их в HTML и PDF",
   "permissions": [
